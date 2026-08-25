@@ -1,34 +1,5 @@
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.Python
+# Exclure tout le contenu du dossier data
+data/
 
-# Environnements virtuels
-.env
-.venv
-env/
-venv/
-
-# Données volumineuses — ne pas versionner
-data/*.duckdb
-data/*.csv
-
-# Session utilisateur — ne pas exposer
-data/session.json
-session.json
-
-# Préférences utilisateur
-data/user_preferences.json
-
-# Cache pytest
-.pytest_cache/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
+# (Optionnel) Si tu veux garder la structure du dossier sur GitHub sans les données :
+!data/.gitkeep
