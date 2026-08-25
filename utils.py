@@ -15,18 +15,24 @@ def inject_custom_css():
 
 
 def navbar_component():
+    # NB: on utilise des <span> (pas des <a href>) pour les liens de nav.
+    # Streamlit intercepte les clics sur les vraies balises <a> internes pour
+    # gerer sa propre navigation, ce qui bloquait ces liens. Un element non-
+    # anchor + navigation geree entierement en JS contourne le probleme.
     navbar_items = ''.join(
-        f'<li><a class="navitem" data-path="/{value}" href="/?nav=%2F{value}">{key}</a></li>'
+        f'<li><span class="navitem" data-path="/{value}" data-href="/?nav=%2F{value}" '
+        f'role="link" tabindex="0">{key}</span></li>'
         for key, value in NAVBAR_PATHS.items()
     )
 
     mobile_items = ''.join(
-        f'<a class="mobile-navitem" data-path="/{value}" href="/?nav=%2F{value}">{key}</a>'
+        f'<span class="mobile-navitem" data-path="/{value}" data-href="/?nav=%2F{value}" '
+        f'role="link" tabindex="0">{key}</span>'
         for key, value in NAVBAR_PATHS.items()
     )
 
     settings_items = ''.join(
-        f'<a href="/?nav={value}" class="settingsNav">{key}</a>'
+        f'<span data-href="/?nav={value}" class="settingsNav" role="link" tabindex="0">{key}</span>'
         for key, value in SETTINGS.items()
     )
 
@@ -35,7 +41,7 @@ def navbar_component():
         <nav class="navbar" id="navbar">
             <div class="nav-container">
                 <div class="brand">
-                    <a href="/?nav=%2Fhome" class="brand-link">🚗 Accidents FR</a>
+                    <span data-href="/?nav=%2Fhome" class="brand-link" role="link" tabindex="0">🚗 Accidents FR</span>
                 </div>
 
                 <ul class="navlist">
@@ -183,16 +189,22 @@ def navbar_component():
         setActiveLink();
 
         doc.querySelectorAll('.navitem, .mobile-navitem, .settingsNav, .brand-link').forEach(function(el) {{
-            el.removeAttribute('target');
-            el.addEventListener('click', function(e) {{
-                // Streamlit intercepte les clics sur les liens internes pour gerer
-                // sa propre navigation SPA, ce qui bloque nos liens "?nav=...".
-                // On empeche cette interception et on navigue nous-memes.
-                e.preventDefault();
-                e.stopPropagation();
+            function goTo() {{
                 closeMobileMenu();
                 closeDropdown();
-                win.location.href = el.getAttribute('href');
+                win.location.href = el.getAttribute('data-href');
+            }}
+            el.addEventListener('click', function(e) {{
+                e.stopPropagation();
+                goTo();
+            }});
+            // Ce ne sont plus des <a>, donc on garde le clavier accessible
+            // (Entree / Espace) puisque le role="link" ne l'active pas nativement.
+            el.addEventListener('keydown', function(e) {{
+                if (e.key === 'Enter' || e.key === ' ') {{
+                    e.preventDefault();
+                    goTo();
+                }}
             }});
         }});
 
