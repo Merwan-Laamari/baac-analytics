@@ -1,4 +1,4 @@
-import json
+µµimport json
 
 import streamlit as st
 from streamlit.components.v1 import html
@@ -188,13 +188,20 @@ def navbar_component():
 
         setActiveLink();
 
+        console.log('[navbar-debug] mount OK, links found:',
+            doc.querySelectorAll('.navitem, .mobile-navitem, .settingsNav, .brand-link').length);
+
         doc.querySelectorAll('.navitem, .mobile-navitem, .settingsNav, .brand-link').forEach(function(el) {{
             function goTo() {{
+                const target = el.getAttribute('data-href');
+                console.log('[navbar-debug] goTo() called, target =', target);
                 closeMobileMenu();
                 closeDropdown();
-                win.location.href = el.getAttribute('data-href');
+                win.location.href = target;
+                console.log('[navbar-debug] win.location.href assigned');
             }}
             el.addEventListener('click', function(e) {{
+                console.log('[navbar-debug] click event fired on', el.className, el.textContent.trim());
                 e.stopPropagation();
                 goTo();
             }});
