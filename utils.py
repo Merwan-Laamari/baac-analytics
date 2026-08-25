@@ -182,11 +182,17 @@ def navbar_component():
 
         setActiveLink();
 
-        doc.querySelectorAll('.navitem, .mobile-navitem, .settingsNav').forEach(function(el) {{
+        doc.querySelectorAll('.navitem, .mobile-navitem, .settingsNav, .brand-link').forEach(function(el) {{
             el.removeAttribute('target');
-            el.addEventListener('click', function() {{
+            el.addEventListener('click', function(e) {{
+                // Streamlit intercepte les clics sur les liens internes pour gerer
+                // sa propre navigation SPA, ce qui bloque nos liens "?nav=...".
+                // On empeche cette interception et on navigue nous-memes.
+                e.preventDefault();
+                e.stopPropagation();
                 closeMobileMenu();
                 closeDropdown();
+                win.location.href = el.getAttribute('href');
             }});
         }});
 
