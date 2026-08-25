@@ -3,3 +3,6 @@ data/
 
 # (Optionnel) Si tu veux garder la structure du dossier sur GitHub sans les données :
 !data/.gitkeep
+
+**/__pycache__/
+*.py[cod]
