@@ -10,7 +10,8 @@ from PATHS import NAVBAR_PATHS, SETTINGS
 import utils as utl
 
 utl.inject_custom_css()
-utl.navbar_component()
+
+# ... (garder render_navbar) ...
 
 def load_session() -> dict:
     # Sur le cloud, on utilise exclusivement st.session_state
@@ -26,6 +27,8 @@ def navigation():
     if not email:
         login.load_view()
         return
+
+    utl.navbar_component()
 
     if route == "/dataset":
         dataset.load_view()

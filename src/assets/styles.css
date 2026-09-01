@@ -79,6 +79,8 @@
     font-size: 1rem;
     letter-spacing: 0.2px;
     white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
 }
 
 .navlist {
@@ -101,6 +103,8 @@
     font-weight: 600;
     padding: 10px 14px;
     border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
@@ -212,6 +216,8 @@
     border-radius: 10px;
     font-size: 0.95rem;
     font-weight: 600;
+    cursor: pointer;
+    user-select: none;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -244,6 +250,8 @@
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.04);
     font-weight: 600;
+    cursor: pointer;
+    user-select: none;
     transition: background 0.2s ease, color 0.2s ease;
 }
 

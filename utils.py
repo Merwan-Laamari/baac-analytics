@@ -197,8 +197,17 @@ def navbar_component():
                 console.log('[navbar-debug] goTo() called, target =', target);
                 closeMobileMenu();
                 closeDropdown();
-                win.location.href = target;
-                console.log('[navbar-debug] win.location.href assigned');
+                // IMPORTANT : ne pas utiliser win.location.href ici.
+                // Cela provoquerait un rechargement complet de la page, donc
+                // une nouvelle session WebSocket Streamlit et la perte de
+                // st.session_state (utilisateur "deconnecte" a chaque clic).
+                // On change l'URL sans recharger via l'History API, puis on
+                // declenche un popstate : c'est ce mecanisme que Streamlit
+                // utilise deja en interne pour synchroniser st.query_params
+                // sans casser la session.
+                win.history.pushState({{}}, '', target);
+                win.dispatchEvent(new PopStateEvent('popstate'));
+                console.log('[navbar-debug] soft navigation via pushState + popstate');
             }}
             el.addEventListener('click', function(e) {{
                 console.log('[navbar-debug] click event fired on', el.className, el.textContent.trim());
